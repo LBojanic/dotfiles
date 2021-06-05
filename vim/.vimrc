@@ -1,22 +1,19 @@
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy finder
-Plug 'junegunn/fzf.vim'
-Plug 'mileszs/ack.vim'
+Plug 'junegunn/fzf.vim' " Fuzzy finder
+Plug 'mileszs/ack.vim' " File search
 Plug 'tpope/vim-fugitive' " Git
 Plug 'airblade/vim-gitgutter' " Git
 Plug 'vim-airline/vim-airline' " Custom bar
 Plug 'dense-analysis/ale' " Linting
 Plug 'maxmellon/vim-jsx-pretty' " Syntax highlight
-Plug 'othree/html5.vim'
+Plug 'othree/html5.vim' " Syntax hightlight for HTML
 Plug 'stsewd/fzf-checkout.vim' " Fuzzy branch checkout
-Plug 'leafgarland/typescript-vim' " Syntax highlight
-Plug 'preservim/nerdtree'
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completition
+Plug 'preservim/nerdtree' " File explorer
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completition and go to implementation/declaration
 Plug 'moll/vim-node'
-Plug 'Quramy/tsuquyomi'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-Plug 'townk/vim-autoclose'
-Plug 'preservim/nerdcommenter' " Use c<Space>c for commenting a line or visual block
+Plug 'townk/vim-autoclose' " Autoclosing quotes, brackets ..
+" Plug 'preservim/nerdcommenter' " Use c<Space>c for commenting a line or visual block
 Plug 'nelstrom/vim-visual-star-search' " Select and press * to search for the selection in the file
 Plug 'tpope/vim-surround' " Surround with quotes, braces ...
 Plug 'sonph/onehalf', { 'rtp': 'vim' } " Colorsheme
@@ -24,6 +21,7 @@ Plug 'pangloss/vim-javascript' " Syntax highlight
 Plug 'JulesWang/css.vim' " Syntax highlight for css
 Plug 'genoma/vim-less' " Syntax hightlight for less
 Plug 'Yggdroot/indentLine' " Indentation lines
+Plug 'dracula/vim', { 'name': 'dracula' }
 call plug#end()
 
 " Cheetsheet
@@ -31,6 +29,15 @@ call plug#end()
 " cs"' changes double quotes to single quotes from inside
 " ds" deletes surrounding quotes
 " ysiw] surround the word with ] ( can be done with anything )
+"
+" <c-b> and <c-f> for scrolling in the suggestions window
+" <c-o> after gd to return to calling point
+"
+" use K for description under cursor
+" gy for type definition
+" gd for definition
+" gi for implementation
+" gr for references
 
 set number
 set relativenumber
@@ -74,15 +81,13 @@ set ai
 set si
 
 syntax on
-set t_Co=256
 set cursorline
-colorscheme onehalfdark
-let g:airline_theme='onehalfdark'
 if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
+colorscheme dracula
 
 let mapleader = " "
 " Custom source .vimrc
@@ -106,7 +111,7 @@ nnoremap <C-U> 11kzz
 nnoremap <C-D> 11jzz
 
 " Remove hl "
-nnoremap <leader>cl :nohlsearch<CR>
+nnoremap <leader>x :nohlsearch<CR>
 
 
 " Start BufExplorer
@@ -131,19 +136,23 @@ nmap <leader>A :tab split<CR>:Ack <C-r><C-w><CR>
 
 " Git Fugitive
 nnoremap <leader>gs :G<CR>
-nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>go :GBranches<CR>
 
 " NERDTree
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <C-f> :NERDTreeFind<CR>zz
 let NERDTreeShowLineNumbers=1 " enable line numbers
 let g:NERDTreeWinSize=60
 autocmd FileType nerdtree setlocal relativenumber " make sure relative line numbers are used
 
 
 " Coc config TODO:
+vmap <leader>ca  <Plug>(coc-codeaction-selected)<CR>
+nmap <leader>ca  <Plug>(coc-codeaction-selected)<CR>
+nmap <leader>cf  <Plug>(coc-format-selected)
+vmap <leader>cf  <Plug>(coc-format-selected)
+
 "
 
 " Nerd Commenter
@@ -190,6 +199,11 @@ augroup configgroup
   autocmd BufNewFile,BufRead .eslintrc set filetype=json
   " show type information automatically when the cursor stops moving
   " autocmd FileType typescript autocmd CursorHold <buffer>
-  autocmd FileType typescript nmap <buffer> <leader>i :echom tsuquyomi#hint()<cr>
-  autocmd FileType typescript nmap <buffer> <leader>I :TsuImport<cr>
 augroup END
+
+if has('nvim-0.4.3') || has('patch-8.2.0750')
+          nnoremap <nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+          nnoremap <nowait><expr> <C-v> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+          inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+          inoremap <nowait><expr> <C-v> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+endif
