@@ -13,7 +13,6 @@ Plug 'preservim/nerdtree' " File explorer
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completition and go to implementation/declaration
 Plug 'moll/vim-node'
 Plug 'townk/vim-autoclose' " Autoclosing quotes, brackets ..
-" Plug 'preservim/nerdcommenter' " Use c<Space>c for commenting a line or visual block
 Plug 'nelstrom/vim-visual-star-search' " Select and press * to search for the selection in the file
 Plug 'tpope/vim-surround' " Surround with quotes, braces ...
 Plug 'sonph/onehalf', { 'rtp': 'vim' } " Colorsheme
@@ -22,6 +21,7 @@ Plug 'JulesWang/css.vim' " Syntax highlight for css
 Plug 'genoma/vim-less' " Syntax hightlight for less
 Plug 'Yggdroot/indentLine' " Indentation lines
 Plug 'dracula/vim', { 'name': 'dracula' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
 call plug#end()
 
 " Cheetsheet
@@ -38,7 +38,10 @@ call plug#end()
 " gd for definition
 " gi for implementation
 " gr for references
-
+" [c jump to next changed in git diff
+" ]c jump to previous changed in git diff
+"
+set encoding=UTF-8
 set number
 set relativenumber
 syntax enable
@@ -88,7 +91,7 @@ if exists('+termguicolors')
   set termguicolors
 endif
 colorscheme dracula
-
+hi Normal ctermbg=NONE guibg=NONE " If set transparent background is available
 let mapleader = " "
 " Custom source .vimrc
 map <leader><CR> :so ~/.vimrc<CR>
