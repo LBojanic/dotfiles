@@ -22,6 +22,7 @@ Plug 'genoma/vim-less' " Syntax hightlight for less
 Plug 'Yggdroot/indentLine' " Indentation lines
 Plug 'dracula/vim', { 'name': 'dracula' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tpope/vim-commentary'
 call plug#end()
 
 " Cheetsheet
@@ -30,7 +31,7 @@ call plug#end()
 " ds" deletes surrounding quotes
 " ysiw] surround the word with ] ( can be done with anything )
 "
-" <c-b> and <c-f> for scrolling in the suggestions window
+" <c-v> and <c-b> for scrolling in the suggestions window
 " <c-o> after gd to return to calling point
 "
 " use K for description under cursor
@@ -40,8 +41,12 @@ call plug#end()
 " gr for references
 " [c jump to next changed in git diff
 " ]c jump to previous changed in git diff
+" gcc for commenting a line
+" gc for commenting a visual block
+"
 "
 set encoding=UTF-8
+set guifont=font-hack-nerd-font
 set number
 set relativenumber
 syntax enable
@@ -110,8 +115,8 @@ nnoremap * *zz
 nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
-nnoremap <C-U> 11kzz
-nnoremap <C-D> 11jzz
+nnoremap <C-U> 11k
+nnoremap <C-D> 11jz
 
 " Remove hl "
 nnoremap <leader>x :nohlsearch<CR>
@@ -210,3 +215,17 @@ if has('nvim-0.4.3') || has('patch-8.2.0750')
           inoremap <nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
           inoremap <nowait><expr> <C-v> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
 endif
+
+let g:NERDTreeGitStatusIndicatorMapCustom = {
+                \ 'Modified'  :'M',
+                \ 'Staged'    :'S',
+                \ 'Untracked' :'U',
+                \ 'Renamed'   :'R',
+                \ 'Unmerged'  :'═',
+                \ 'Deleted'   :'D',
+                \ 'Dirty'     :'',
+                \ 'Ignored'   :'☒',
+                \ 'Clean'     :'✔︎',
+                \ 'Unknown'   :'?',
+                \ }
+let g:gitgutter_diff_args='--cached'
