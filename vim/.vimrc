@@ -3,7 +3,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy finder
 Plug 'junegunn/fzf.vim' " Fuzzy finder
 Plug 'mileszs/ack.vim' " File search
 Plug 'tpope/vim-fugitive' " Git
-Plug 'airblade/vim-gitgutter' " Git
+Plug 'mhinz/vim-signify'
 Plug 'vim-airline/vim-airline' " Custom bar
 Plug 'dense-analysis/ale' " Linting
 Plug 'maxmellon/vim-jsx-pretty' " Syntax highlight
@@ -228,4 +228,3 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
                 \ 'Clean'     :'✔︎',
                 \ 'Unknown'   :'?',
                 \ }
-let g:gitgutter_diff_args='--cached'
